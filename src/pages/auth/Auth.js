@@ -28,6 +28,7 @@ const useProvideAuth = () => {
                 password
             }
         }).then(response => {
+            setUser("user")
             cb(response)
         }).catch(error => {
             console.log(error)

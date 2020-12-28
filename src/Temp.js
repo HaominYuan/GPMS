@@ -206,4 +206,4 @@ class EditableTable extends React.Component {
     }
 }
 
-export default EditableCell
+export default EditableTable

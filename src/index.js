@@ -8,21 +8,24 @@ import "./index.scss"
 import { ProvideAuth, useAuth } from './pages/auth/Auth';
 import Login from './pages/login/Login'
 import Home from './pages/home/Home'
-import EditableCell from './Temp';
+import EditableTable from './Temp';
+import Nomatch from './pages/404/Nomatch';
 
 
 const R = () => {
     const { user } = useAuth()
     const location = useLocation()
+    console.log(location.pathname + "  now")
 
     return (
         <>
-            { !user && <Redirect  to={{pathname: "/login", state: {"fuck": "fuck"}}}/>}
+            { location.pathname !== "/login" && !user && <Redirect to={{pathname: "/login", state: {referrer: location.pathname}}}/>}
             <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/home" component={Home} />
+                <Route path="/edit" component={EditableTable} />
                 <Route exact path="/" component={Home} />
-                <Route path="/edit" component={EditableCell} />
+                <Route exact path="*" component={Nomatch} />
             </Switch>
         </>
     )

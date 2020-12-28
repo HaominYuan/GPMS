@@ -17,10 +17,16 @@ const Login =  () => {
     const { signin } = useAuth()
     const history = useHistory()
 
+    console.log(history.location.state.referrer + "   ...")
+
     const onFinish = ({username, password}) => {
         signin((response) => {
             if (response.data.state === "Yes") {
-                history.push("/home")
+                if (history.location.state) {
+                    history.push(history.location.state.referrer)
+                } else { 
+                    history.push("/home")
+                }
             } else {
                 console.log("password error")
             }

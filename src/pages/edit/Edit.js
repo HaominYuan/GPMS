@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import style from './edit.module.scss'
+
 const EditableContext = React.createContext();
 
 const EditableRow = ({ index, ...props }) => {
@@ -183,8 +185,10 @@ class EditableTable extends React.Component {
                 }),
             };
         });
+
+
         return (
-            <div>
+            <div className={style.edit}>
                 <Button
                     onClick={this.handleAdd}
                     type="primary"
@@ -193,7 +197,7 @@ class EditableTable extends React.Component {
                     }}
                 >
                     Add a row
-        </Button>
+                </Button>
                 <Table
                     components={components}
                     rowClassName={() => 'editable-row'}

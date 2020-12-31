@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Drawer, } from 'antd'
-import { Observer } from 'mobx-react';
+import { Observer } from 'mobx-react-lite';
 import { StoreContext } from './Display'
 
 

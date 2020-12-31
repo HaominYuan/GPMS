@@ -6,7 +6,7 @@ import img2 from '../../images/flowers/2.jpg'
 import img3 from '../../images/flowers/3.jpg'
 import { StoreContext } from './Display'
 import style from './display.module.scss'
-import { Observer } from 'mobx-react'
+import { Observer, useObserver } from 'mobx-react-lite'
 const { Meta } = Card;
 
 const items = [
@@ -27,7 +27,6 @@ const items = [
         title: '戴安娜粉玫瑰+紫色勿忘我',
         img: img3
     },
-
 ]
 
 const Goods = () => {

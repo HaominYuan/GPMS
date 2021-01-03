@@ -1,25 +1,25 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import ReactDOM from 'react-dom';
 import {
-    BrowserRouter as Router, Route, Switch, useLocation
+    BrowserRouter as Router, Redirect, Route, Switch, useLocation
 } from 'react-router-dom'
 
 import "./index.scss"
-import { ProvideAuth, useAuth } from './pages/auth/Auth';
 import Login from './pages/login/Login'
 import Home from './pages/home/Home'
 import EditableTable from './pages/edit/Edit';
 import Nomatch from './pages/404/Nomatch';
 import Display from './pages/display/Display';
-
+import RootStore from './store/RootStore';
+import  { RootStoreContext } from './store/RootStore'
 
 const R = () => {
-    const { user } = useAuth()
+    const { authStore } = useContext(RootStoreContext)
     const location = useLocation()
 
     return (
         <>
-            {/* { location.pathname !== "/login" && !user && <Redirect to={{pathname: "/login", state: {referrer: location.pathname}}}/>} */}
+            { location.pathname !== "/login" && !authStore.user && <Redirect to={{pathname: "/login", state: {referrer: location.pathname}}}/>}
             <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/home" component={Home} />
@@ -34,11 +34,11 @@ const R = () => {
 
 ReactDOM.render(
     <React.StrictMode>
-        <ProvideAuth>
+        <RootStore>
             <Router>
                 <R />
             </Router>
-        </ProvideAuth>
+        </RootStore>
     </React.StrictMode>,
     document.getElementById('root')
 );

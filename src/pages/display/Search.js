@@ -2,14 +2,16 @@ import React, { useContext } from 'react'
 import style from './display.module.scss'
 import { Input } from 'antd'
 import { StoreContext } from './Display'
+import { RootStoreContext } from '../../store/RootStore'
 
 const { Search } = Input
 
 const Wrapper = () => {
-    const store = useContext(StoreContext)
+    const { flowerStore } = useContext(RootStoreContext)
+
 
     const onSearch = (value, event) => {
-        store.setSearchText(value)
+        flowerStore.search(value)
     }
 
 

@@ -1,5 +1,3 @@
-
-import { createContext } from "react"
 import { useLocalObservable } from "mobx-react"
 import img0 from '../../images/flowers/0.jpg'
 import img1 from '../../images/flowers/1.jpg'
@@ -11,22 +9,29 @@ const initalValues = {
     flowers: [{
             price: 158,
             title: '11枝红玫瑰+栀子叶',
-            img: img0
+            img: img0,
+            id: 0
         }, {
             price: 268,
             title: '19枝苏醒玫瑰+2枝粉色桔梗',
             img: img1,
+            id: 1
         }, {
             price: 378,
             title: '浓33枝红玫瑰+梦幻黑纱',
             img: img2,
+            id: 2
         }, {
             price: 628,
             title: '戴安娜粉玫瑰+紫色勿忘我',
             img: img3,
+            id: 3
         },
     ],
     searchText: "",
+    cart: new Map(),
+    cartVisible: false,
+    order: []
 }
 
 const FlowerContext = () => {
@@ -40,6 +45,58 @@ const FlowerContext = () => {
         get result() {
             return store.flowers.filter((element) => {
                 return element.title.search(store.searchText) !== -1
+            })
+        },
+
+        setCartVisible(state) {
+            store.cartVisible = state
+        },
+
+        addGoods(id) {
+            let count = store.cart.get(id)
+            count =  count ? count + 1 : 1
+            store.cart.set(id, count)
+        },
+
+        minusGoods(id) {
+            let count = store.cart.get(id)
+            if (!count) return
+            count = count - 1
+            if (count === 0) {
+                store.cart.delete(id)
+            } else {
+                store.cart.set(id, count)
+            }
+        },
+
+        get cartGoods() {
+            const result = []
+            store.cart.forEach((value, key) => {
+                result.push(      
+                    { 
+                        ...store.flowers[key],
+                        number: value,
+                        key
+                    }
+                )
+            });
+
+            return result
+        },
+
+        addOrder(information, list) {
+            console.log(JSON.stringify(information), JSON.stringify(list))
+
+            list.forEach(({id}) => {
+                store.cart.delete(id)
+            })
+
+            console.log(JSON.stringify(store.cart))
+
+            store.order.push({
+                information,
+                list,
+                isReceived: false
             })
         }
     }))

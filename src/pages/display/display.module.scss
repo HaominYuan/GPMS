@@ -18,3 +18,36 @@
     align-items: center;
     height: 100%;
 }
+
+.cart {
+    position: absolute;
+    right: 0;
+    top: 50%;
+}
+
+.cartGoods {
+    display: flex;
+    justify-content: space-evenly;
+
+
+    .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin-left: 20px;
+    }
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+}
+
+.drawer {
+    display: flex;
+}
+
+.button {
+    margin-top: 40px;
+    align-self: flex-end;
+}

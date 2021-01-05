@@ -12,6 +12,7 @@ import Nomatch from './pages/404/Nomatch';
 import Display from './pages/display/Display';
 import RootStore from './store/RootStore';
 import  { RootStoreContext } from './store/RootStore'
+import Pay from './pages/pay/Pay';
 
 const R = () => {
     const { authStore } = useContext(RootStoreContext)
@@ -25,6 +26,7 @@ const R = () => {
                 <Route path="/home" component={Home} />
                 <Route path="/edit" component={EditableTable} />
                 <Route path="/display" component={Display} />
+                <Route path="/pay" component={Pay} />
                 <Route exact path="/" component={Home} />
                 <Route exact path="*" component={Nomatch} />
             </Switch>

@@ -1,28 +1,26 @@
 import React, { useContext } from 'react'
 import { Space, Card, Button, Image } from 'antd'
-import { StoreContext } from './Display'
 import style from './display.module.scss'
 import { RootStoreContext } from '../../store/RootStore'
 import { observer } from 'mobx-react'
 const { Meta } = Card;
 
 const Goods = observer(() => {
-    const store = useContext(StoreContext)
     const { flowerStore } = useContext(RootStoreContext)
 
-    const showDrawer = () => {
-        store.setVisible(true)
+    const showDrawer = (id) => {
+        flowerStore.addGoods(id)
     }
 
     return (
         <div className={style.goods}>
             <Space>
-                {flowerStore.result.map(({ price, title, img }, index) => {
+                {flowerStore.result.map(({ price, title, img, id }) => {
                     return (
                         <Card style={{ width: 150 }}
                             cover={<Image src={img} />}
-                            actions={[<Button onClick={showDrawer}>加入购物车</Button>]}
-                            key={index}
+                            actions={[<Button type="primary" onClick={() => showDrawer(id)} >加入购物车</Button>]}
+                            key={id}
                         >
                             <Meta
                                 title={title}

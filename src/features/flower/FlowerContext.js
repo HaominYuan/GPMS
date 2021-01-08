@@ -7,26 +7,26 @@ import { api } from "../../api/axios-config"
 
 const initalValues = {
     flowers: [{
-            price: 158,
-            title: '11枝红玫瑰+栀子叶',
-            img: img0,
-            id: 0
-        }, {
-            price: 268,
-            title: '19枝苏醒玫瑰+2枝粉色桔梗',
-            img: img1,
-            id: 1
-        }, {
-            price: 378,
-            title: '浓33枝红玫瑰+梦幻黑纱',
-            img: img2,
-            id: 2
-        }, {
-            price: 628,
-            title: '戴安娜粉玫瑰+紫色勿忘我',
-            img: img3,
-            id: 3
-        },
+        price: 158,
+        title: '11枝红玫瑰+栀子叶',
+        img: img0,
+        id: 0
+    }, {
+        price: 268,
+        title: '19枝苏醒玫瑰+2枝粉色桔梗',
+        img: img1,
+        id: 1
+    }, {
+        price: 378,
+        title: '浓33枝红玫瑰+梦幻黑纱',
+        img: img2,
+        id: 2
+    }, {
+        price: 628,
+        title: '戴安娜粉玫瑰+紫色勿忘我',
+        img: img3,
+        id: 3
+    },
     ],
     searchText: "",
     cart: new Map(),
@@ -54,7 +54,7 @@ const FlowerContext = () => {
 
         addGoods(id) {
             let count = store.cart.get(id)
-            count =  count ? count + 1 : 1
+            count = count ? count + 1 : 1
             store.cart.set(id, count)
         },
 
@@ -72,8 +72,8 @@ const FlowerContext = () => {
         get cartGoods() {
             const result = []
             store.cart.forEach((value, key) => {
-                result.push(      
-                    { 
+                result.push(
+                    {
                         ...store.flowers[key],
                         number: value,
                         key
@@ -84,23 +84,39 @@ const FlowerContext = () => {
             return result
         },
 
-        addOrder(information, list) {
-            console.log(JSON.stringify(information), JSON.stringify(list))
+        addOrder(information, list, money) {
+            // console.log(JSON.stringify(information), JSON.stringify(list))
 
-            list.forEach(({id}) => {
+            list.forEach(({ id }) => {
                 store.cart.delete(id)
             })
 
-            console.log(JSON.stringify(store.cart))
+            // console.log(JSON.stringify(store.cart))
 
             store.order.push({
                 information,
                 list,
-                isReceived: false
+                isReceived: false,
+                isSent: false,
+                money
+            })
+            // console.log(store.order)
+        },
+
+        get orderList() {
+            return store.order.map(value => {
+                const { list } = value
+                let newList = list.map(({id, number}) => {
+                    return {
+                        ...store.flowers[id],
+                        number
+                    }
+                })
+                return {...value, list: newList}
             })
         }
     }))
-    
+
     return store
 }
 

@@ -5,6 +5,7 @@ import { RootStoreContext } from "../../store/RootStore";
 import Text from "antd/lib/typography/Text";
 import style from './pay.module.scss'
 import QRCode from 'qrcode.react'
+import { useHistory } from "react-router-dom";
 
 const columns = [
     {
@@ -109,6 +110,7 @@ const Pay = observer(() => {
     const [list, setList] = useState([])
     const [visible, setVisible] = useState(false)
     const [information, setInformation] = useState({})
+    const history = useHistory()
 
     const tableChange = (selectedRowKeys, selectedRows) => {
         // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
@@ -133,11 +135,15 @@ const Pay = observer(() => {
         setVisible(true)
     }
 
+    const toOrder = () => {
+        history.push('/order')
+    }
+
     useEffect(() => {
         if (visible) {
             setTimeout(() => {
                 setVisible(false)
-                flowerStore.addOrder(information, list)
+                flowerStore.addOrder(information, list, money)
             }, 3000)
         }
     }, [visible])
@@ -225,6 +231,7 @@ const Pay = observer(() => {
             >
                 <QRCode level='H' value="http://tstxxy.icu" style={{display: 'block', margin: '0 auto'}}/>
             </Modal>
+            <Button className={style.order} onClick={toOrder}>订单中心</Button>
         </>
     );
 });

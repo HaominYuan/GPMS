@@ -1,0 +1,29 @@
+.goods {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cartGoods {
+    display: flex;
+    flex-basis: 300px;
+
+    .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin-left: 20px;
+    }
+}
+
+.item {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.down {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+

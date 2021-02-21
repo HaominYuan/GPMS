@@ -19,9 +19,10 @@ const R = () => {
     const { authStore } = useContext(RootStoreContext)
     const location = useLocation()
 
+
     return (
         <>
-            { location.pathname !== "/login" && !authStore.user && <Redirect to={{pathname: "/login", state: {referrer: location.pathname}}}/>}
+            { location.pathname !== "/login" && !authStore.status && <Redirect to={{pathname: "/login", state: {referrer: location.pathname}}}/>}
             <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/home" component={Home} />

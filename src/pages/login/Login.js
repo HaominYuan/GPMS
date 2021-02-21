@@ -5,7 +5,6 @@ import { Redirect, useLocation } from 'react-router-dom';
 import { RootStoreContext } from '../../store/RootStore';
 import { observer } from 'mobx-react-lite';
 
-
 const layout = {
     labelCol: { span: 8 },
     wrapperCol: { span: 16 },
@@ -28,7 +27,7 @@ const Login = observer(() => {
 
     return (
         <>
-            { authStore.user && <Redirect to={{pathname: location.state ? location.state.referrer : "/home"}}/>}
+            { authStore.status && <Redirect to={{pathname: location.state ? location.state.referrer : "/home"}}/>}
             <div className={style.login}>
                 <Form {...layout} name="basic" onFinish={onFinish} onFinishFailed={onFinishFailed}>
                     <Form.Item

@@ -1,11 +1,10 @@
 
-import { createContext } from "react"
 import { useLocalObservable } from "mobx-react"
 import { api } from "../../api/axios-config"
 
 
 const initalValues = {
-    user: false
+    status: window.localStorage.getItem("accesstoken") ? true : false
 }
 
 const AuthContext = () => {
@@ -16,9 +15,9 @@ const AuthContext = () => {
         //     return store.user
         // },
 
-        setUser(state) {
-            store.user = state
-        },
+        // setUser(accessToken) {
+        //     store.user = accessToken
+        // },
 
         async login(username, password) {
             const result = await api.get('login', {
@@ -27,14 +26,21 @@ const AuthContext = () => {
                     password
                 }
             })
+            console.log(JSON.stringify(result.data))
+        
             if (result.data.state === 'Yes') {
-                store.user = true
+                store.status = true
             }
         },
 
         logout() {
-            store.user = false
-        }
+            window.localStorage.removeItem("accesstoken")
+        },
+
+        // getStatus() {
+        //     // console.log(window.localStorage.getItem("accessToken"))
+        //     return window.localStorage.getItem("accessToken")
+        // }
     }))
     return store
 }

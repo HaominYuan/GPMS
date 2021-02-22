@@ -10,6 +10,7 @@ const Goods = observer(() => {
 
     const showDrawer = (id) => {
         flowerStore.addGoods(id)
+        flowerStore.setCartVisible(true)
     }
 
     return (

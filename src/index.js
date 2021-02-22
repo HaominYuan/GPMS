@@ -14,11 +14,11 @@ import RootStore from './store/RootStore';
 import  { RootStoreContext } from './store/RootStore'
 import Pay from './pages/pay/Pay';
 import Order from './pages/order/Order';
+import Seller from './pages/seller/Seller'
 
 const R = () => {
     const { authStore } = useContext(RootStoreContext)
     const location = useLocation()
-
 
     return (
         <>
@@ -30,7 +30,8 @@ const R = () => {
                 <Route path="/display" component={Display} />
                 <Route path="/pay" component={Pay} />
                 <Route path="/order" component={Order} />
-                <Route exact path="/" component={Home} />
+                <Route path="/seller" component={Seller} />
+                <Route exact path="/" component={Display} />
                 <Route exact path="*" component={Nomatch} />
             </Switch>
         </>

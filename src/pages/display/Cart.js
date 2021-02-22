@@ -34,6 +34,7 @@ const Cart = observer(() => {
 
 
     return (
+
         <>
             <Drawer
                 title="购物车"
@@ -42,6 +43,8 @@ const Cart = observer(() => {
                 onClose={onClose}
                 visible={flowerStore.cartVisible}
                 bodyStyle={{ display: 'flex', flexDirection: 'column' }}
+                mask={false}
+                closable={true}
             >
                 {flowerStore.cartGoods.map(({ price, title, img, id, number }) => {
                     return (

@@ -9,7 +9,7 @@ const Wrapper = () => {
     const { flowerStore } = useContext(RootStoreContext)
 
 
-    const onSearch = (value, event) => {
+    const onSearch = (value) => {
         flowerStore.search(value)
     }
 

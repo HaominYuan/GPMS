@@ -1,6 +1,6 @@
 import { observer } from "mobx-react"
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Cascader, Input, Select, Table, Form, Modal } from 'antd';
+import { Button, Cascader, Input, Select, Table, Form, Modal, message } from 'antd';
 import { RootStoreContext } from "../../store/RootStore";
 import Text from "antd/lib/typography/Text";
 import style from './pay.module.scss'
@@ -30,7 +30,6 @@ const columns = [
         dataIndex: 'price',
         key: 'price'
     }
-
 ];
 
 const residences = [
@@ -113,9 +112,6 @@ const Pay = observer(() => {
     const history = useHistory()
 
     const tableChange = (selectedRowKeys, selectedRows) => {
-        // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-        // console.log(JSON.stringify(selectedRows))
-
         setList(selectedRows.map(value => {
             return {
                 id: value.key,
@@ -129,9 +125,13 @@ const Pay = observer(() => {
     }
 
     const onFinish = values => {
-        // console.log(JSON.stringify(values))
+        if (money === 0) {
+            message.info("请选择需要支付的商品")
+            return
+        }
+
+
         setInformation(values)
-        // console.log(JSON.stringify(list))
         setVisible(true)
     }
 
@@ -157,6 +157,7 @@ const Pay = observer(() => {
                     }}
                     columns={columns}
                     dataSource={flowerStore.cartGoods}
+                    // dataSource={data}
                     pagination={false}
                     summary={() => {
                         return <Table.Summary.Row>

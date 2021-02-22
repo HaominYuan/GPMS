@@ -6,57 +6,57 @@ import style from './order.module.scss'
 import Text from 'antd/lib/typography/Text';
 
 
-const data = [{
-    "information":
-    {
-        "receiver": "tstxxy", "phone": "15338755459", "address": {
-            "region": ["广东省", "广州市", "天河区"],
-            "address": "天河体育中心"
-        }, "expressCompany": "顺丰", "remark": "孟觉觉"
-    },
-    "list": [
-        { "price": 158, "title": "11枝红玫瑰+栀子叶", "img": "/static/media/0.6d5e7135.jpg", "id": 0, "number": 3 },
-        { "price": 268, "title": "19枝苏醒玫瑰+2枝粉色桔梗", "img": "/static/media/1.bdbb4833.jpg", "id": 1, "number": 2 },
-        { "price": 628, "title": "戴安娜粉玫瑰+紫色勿忘我", "img": "/static/media/3.0900c046.jpg", "id": 3, "number": 2 },
-        { "price": 378, "title": "浓33枝红玫瑰+梦幻黑纱", "img": "/static/media/2.e88520e9.jpg", "id": 2, "number": 1 }],
-    "isReceived": false,
-    "isSent": false,
-    "money": 345
-},
-{
-    "information":
-    {
-        "receiver": "tstxxy", "phone": "15338755459", "address": {
-            "region": ["广东省", "广州市", "天河区"],
-            "address": "天河体育中心"
-        }, "expressCompany": "顺丰", "remark": "孟觉觉"
-    },
-    "list": [
-        { "price": 158, "title": "11枝红玫瑰+栀子叶", "img": "/static/media/0.6d5e7135.jpg", "id": 0, "number": 3 },
-        { "price": 268, "title": "19枝苏醒玫瑰+2枝粉色桔梗", "img": "/static/media/1.bdbb4833.jpg", "id": 1, "number": 2 },
-        { "price": 628, "title": "戴安娜粉玫瑰+紫色勿忘我", "img": "/static/media/3.0900c046.jpg", "id": 3, "number": 2 },
-        { "price": 378, "title": "浓33枝红玫瑰+梦幻黑纱", "img": "/static/media/2.e88520e9.jpg", "id": 2, "number": 1 }],
-    "isReceived": false,
-    "isSent": true,
-    money: 123
-},
-{
-    "information":
-    {
-        "receiver": "tstxxy", "phone": "15338755459", "address": {
-            "region": ["广东省", "广州市", "天河区"],
-            "address": "天河体育中心"
-        }, "expressCompany": "顺丰", "remark": "孟觉觉"
-    },
-    "list": [
-        { "price": 158, "title": "11枝红玫瑰+栀子叶", "img": "/static/media/0.6d5e7135.jpg", "id": 0, "number": 3 },
-        { "price": 268, "title": "19枝苏醒玫瑰+2枝粉色桔梗", "img": "/static/media/1.bdbb4833.jpg", "id": 1, "number": 2 },
-        { "price": 628, "title": "戴安娜粉玫瑰+紫色勿忘我", "img": "/static/media/3.0900c046.jpg", "id": 3, "number": 2 },
-        { "price": 378, "title": "浓33枝红玫瑰+梦幻黑纱", "img": "/static/media/2.e88520e9.jpg", "id": 2, "number": 1 }],
-    "isReceived": true,
-    "isSent": true,
-    money: 123
-}]
+// const data = [{
+//     "information":
+//     {
+//         "receiver": "tstxxy", "phone": "15338755459", "address": {
+//             "region": ["广东省", "广州市", "天河区"],
+//             "address": "天河体育中心"
+//         }, "expressCompany": "顺丰", "remark": "孟觉觉"
+//     },
+//     "list": [
+//         { "price": 158, "title": "11枝红玫瑰+栀子叶", "img": "/static/media/0.6d5e7135.jpg", "id": 0, "number": 3 },
+//         { "price": 268, "title": "19枝苏醒玫瑰+2枝粉色桔梗", "img": "/static/media/1.bdbb4833.jpg", "id": 1, "number": 2 },
+//         { "price": 628, "title": "戴安娜粉玫瑰+紫色勿忘我", "img": "/static/media/3.0900c046.jpg", "id": 3, "number": 2 },
+//         { "price": 378, "title": "浓33枝红玫瑰+梦幻黑纱", "img": "/static/media/2.e88520e9.jpg", "id": 2, "number": 1 }],
+//     "isReceived": false,
+//     "isSent": false,
+//     "money": 345
+// },
+// {
+//     "information":
+//     {
+//         "receiver": "tstxxy", "phone": "15338755459", "address": {
+//             "region": ["广东省", "广州市", "天河区"],
+//             "address": "天河体育中心"
+//         }, "expressCompany": "顺丰", "remark": "孟觉觉"
+//     },
+//     "list": [
+//         { "price": 158, "title": "11枝红玫瑰+栀子叶", "img": "/static/media/0.6d5e7135.jpg", "id": 0, "number": 3 },
+//         { "price": 268, "title": "19枝苏醒玫瑰+2枝粉色桔梗", "img": "/static/media/1.bdbb4833.jpg", "id": 1, "number": 2 },
+//         { "price": 628, "title": "戴安娜粉玫瑰+紫色勿忘我", "img": "/static/media/3.0900c046.jpg", "id": 3, "number": 2 },
+//         { "price": 378, "title": "浓33枝红玫瑰+梦幻黑纱", "img": "/static/media/2.e88520e9.jpg", "id": 2, "number": 1 }],
+//     "isReceived": false,
+//     "isSent": true,
+//     money: 123
+// },
+// {
+//     "information":
+//     {
+//         "receiver": "tstxxy", "phone": "15338755459", "address": {
+//             "region": ["广东省", "广州市", "天河区"],
+//             "address": "天河体育中心"
+//         }, "expressCompany": "顺丰", "remark": "孟觉觉"
+//     },
+//     "list": [
+//         { "price": 158, "title": "11枝红玫瑰+栀子叶", "img": "/static/media/0.6d5e7135.jpg", "id": 0, "number": 3 },
+//         { "price": 268, "title": "19枝苏醒玫瑰+2枝粉色桔梗", "img": "/static/media/1.bdbb4833.jpg", "id": 1, "number": 2 },
+//         { "price": 628, "title": "戴安娜粉玫瑰+紫色勿忘我", "img": "/static/media/3.0900c046.jpg", "id": 3, "number": 2 },
+//         { "price": 378, "title": "浓33枝红玫瑰+梦幻黑纱", "img": "/static/media/2.e88520e9.jpg", "id": 2, "number": 1 }],
+//     "isReceived": true,
+//     "isSent": true,
+//     money: 123
+// }]
 
 const Order = observer(() => {
     const { flowerStore } = useContext(RootStoreContext)
@@ -66,7 +66,9 @@ const Order = observer(() => {
             <List
                 header={<div>所有订单</div>}
                 bordered
-                dataSource={data}
+                dataSource={flowerStore.orderList}
+                // dataSource={data}
+
                 renderItem={({ list, isReceived, isSent, money }) => (
                     <Card>
                         <div className={style.item}>

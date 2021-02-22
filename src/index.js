@@ -11,7 +11,7 @@ import EditableTable from './pages/edit/Edit';
 import Nomatch from './pages/404/Nomatch';
 import Display from './pages/display/Display';
 import RootStore from './store/RootStore';
-import  { RootStoreContext } from './store/RootStore'
+import { RootStoreContext } from './store/RootStore'
 import Pay from './pages/pay/Pay';
 import Order from './pages/order/Order';
 import Seller from './pages/seller/Seller'
@@ -22,7 +22,7 @@ const R = () => {
 
     return (
         <>
-            { location.pathname !== "/login" && !authStore.status && <Redirect to={{pathname: "/login", state: {referrer: location.pathname}}}/>}
+            { location.pathname !== "/login" && !authStore.status && <Redirect to={{ pathname: "/login", state: { referrer: location.pathname } }} />}
             <Switch>
                 <Route path="/login" component={Login} />
                 <Route path="/home" component={Home} />
@@ -39,12 +39,10 @@ const R = () => {
 }
 
 ReactDOM.render(
-    <React.StrictMode>
-        <RootStore>
-            <Router>
-                <R />
-            </Router>
-        </RootStore>
-    </React.StrictMode>,
+    <RootStore>
+        <Router>
+            <R />
+        </Router>
+    </RootStore>,
     document.getElementById('root')
-);
+)

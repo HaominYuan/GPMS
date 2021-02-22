@@ -6,6 +6,7 @@ import axios from "axios";
 
 const TOKEN = "accesstoken"
 
+
 axios.interceptors.request.use(config => {
     let token = window.localStorage.getItem(TOKEN)
     if (token) {
@@ -31,3 +32,4 @@ export const Endpoints = {
     heroes: "heroes",
     antiHeroes: "anti-heroes",
 };
+

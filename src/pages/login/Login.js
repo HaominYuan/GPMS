@@ -4,7 +4,7 @@ import style from './login.module.scss'
 import { Redirect, useLocation } from 'react-router-dom';
 import { RootStoreContext } from '../../store/RootStore';
 import { observer } from 'mobx-react-lite';
-const { Header, Footer, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 
 const layout = {
     labelCol: { span: 8 },

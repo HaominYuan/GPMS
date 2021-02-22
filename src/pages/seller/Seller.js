@@ -1,12 +1,17 @@
 import { Menu } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, Route, useRouteMatch } from 'react-router-dom'
 import { Layout } from 'antd'
+import { observer } from 'mobx-react';
+import FlowerList from './FlowerList';
+import FlowerType from './FlowerType';
+import style from './seller.module.scss'
+import OrderList from './OrderList';
 
 const { Content, Sider } = Layout
-
 const { SubMenu } = Menu;
 
-const Seller = () => {
+const Seller = observer(() => {
+    const { path, url } = useRouteMatch()
 
     const handleClick = e => {
         console.log('click ', e);
@@ -18,45 +23,49 @@ const Seller = () => {
                 <Sider className="site-layout-background">
                     <Menu
                         onClick={handleClick}
-                        defaultSelectedKeys={['type']}
+                        defaultSelectedKeys={['flowertype']}
+                        defaultOpenKeys={['flower']}
                         mode="inline"
                         style={{ height: '100%' }}
                     >
                         <SubMenu key="flower" title="鲜花管理">
-                            <Menu.Item key="type">
+                            <Menu.Item key="flowertype">
                                 鲜花类别
-                            <Link to="/seller/type" />
+                                <Link to={`${url}/flowertype`} />
                             </Menu.Item>
                             <Menu.Item key="flowerlist">
                                 鲜花列表
-                            <Link to="/seller/name" />
+                                <Link to={`${url}/flowerlist`} />
                             </Menu.Item>
                         </SubMenu>
 
                         <SubMenu key="order" title="订单管理">
                             <Menu.Item key="orderlist">
                                 订单列表
-                        <Link to="/seller/name" />
+                                <Link to={`${url}/orderlist`} />
                             </Menu.Item>
                         </SubMenu>
                     </Menu>
                 </Sider>
-                <Layout style={{ padding: '0 24px 24px' }}>
+                <Layout>
                     <Content
-                        className="site-layout-background"
                         style={{
                             padding: 24,
                             margin: 0,
-                            'min-height': '100vh'
+                            'minHeight': '100vh',
+                            background: 'white'
                         }}
                     >
-                        Content
+                        <Route path={`${path}/flowerlist`} component={FlowerList} />
+                        <Route path={`${path}/flowertype`} component={FlowerType} />
+                        <Route path={`${path}/orderlist`} component={OrderList} />
+                        <Route exact path={`${path}`} component={FlowerList} />
                     </Content>
                 </Layout>
             </Layout>
         </>
     )
-}
+})
 
 
 export default Seller

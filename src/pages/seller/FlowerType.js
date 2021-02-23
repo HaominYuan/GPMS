@@ -1,7 +1,7 @@
 import { Table, Space, Button } from 'antd'
 import Modal from 'antd/lib/modal/Modal';
 import { observer } from 'mobx-react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { RootStoreContext } from '../../store/RootStore'
 import { Form, Input } from 'antd';
 
@@ -13,13 +13,17 @@ const trans = (text) => {
 
 const FlowerType = observer(() => {
     const { detailStore } = useContext(RootStoreContext)
-    const [typeValue, setTypeValue] = useState();
-    const [descriptionValue, setDescriptionValue] = useState()
     const [ form ] = Form.useForm()
 
-    form.setFieldsValue(detailStore.getEditing())
+    useEffect(() => {
+        if (detailStore.detailVisible) {
+            form.setFieldsValue(detailStore.getEditing())
+        }
+    })
 
     const handleOk = () => {
+        console.log(form.getFieldValue('type'))
+        console.log(form.getFieldValue('description'))
         detailStore.setVisible(false)
     };
 
@@ -62,7 +66,7 @@ const FlowerType = observer(() => {
     return (
         <>
             <Table columns={columns} dataSource={detailStore.flowerType} />
-            <Modal title="类别属性" visible={detailStore.detailVisible} onOk={handleOk} onCancel={handleCancel} getContainer={false}>
+            <Modal title="类别属性" visible={detailStore.detailVisible} onOk={handleOk} onCancel={handleCancel}>
                 <Form
                     name="basic"
                     form={form}
@@ -71,14 +75,14 @@ const FlowerType = observer(() => {
                         label="类名"
                         name="type"
                     >
-                        <Input value={typeValue} />
+                        <Input />
                     </Form.Item>
 
                     <Form.Item
                         label="描述"
                         name="description"
                     >
-                        <Input.TextArea value={descriptionValue} />
+                        <Input.TextArea />
                     </Form.Item>
                 </Form>
             </Modal>

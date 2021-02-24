@@ -9,29 +9,29 @@ import { useHistory } from 'react-router-dom';
 
 
 const Cart = observer(() => {
-    const { flowerStore } = useContext(RootStoreContext)
+    const { displayStore } = useContext(RootStoreContext)
     const history = useHistory()
 
+
     const onClose = () => {
-        flowerStore.setCartVisible(false)
+        displayStore.setCartVisible(false)
     };
 
     const open = () => {
-        flowerStore.setCartVisible(true)
+        displayStore.setCartVisible(true)
     }
 
     const decline = (id) => {
-        flowerStore.minusGoods(id)
+        displayStore.minusGoods(id)
     }
 
     const increase = (id) => {
-        flowerStore.addGoods(id)
+        displayStore.addGoods(id)
     }
 
     const toPay = () => {
         history.push("/pay")
     }
-
 
     return (
 
@@ -41,12 +41,12 @@ const Cart = observer(() => {
                 placement="right"
                 closable={false}
                 onClose={onClose}
-                visible={flowerStore.cartVisible}
+                visible={displayStore.cartVisible}
                 bodyStyle={{ display: 'flex', flexDirection: 'column' }}
                 mask={false}
-                closable={true}
+                closable
             >
-                {flowerStore.cartGoods.map(({ price, title, img, id, number }) => {
+                {displayStore.cartGoods.map(({ price, title, img, id, number }) => {
                     return (
                         <div className={style.cartGoods} key={id}>
                             <Badge count={number}>

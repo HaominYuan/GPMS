@@ -1,122 +1,60 @@
 import { useLocalObservable } from "mobx-react"
+import { api } from "../../api/axios-config"
 import img0 from '../../images/flowers/0.jpg'
 import img1 from '../../images/flowers/1.jpg'
 import img2 from '../../images/flowers/2.jpg'
 import img3 from '../../images/flowers/3.jpg'
-import { api } from "../../api/axios-config"
+
+const imgs = [img0, img1, img2, img3]
 
 const initalValues = {
-    flowers: [{
-        price: 158,
-        title: '11枝红玫瑰+栀子叶',
-        img: img0,
-        id: 0
-    }, {
-        price: 268,
-        title: '19枝苏醒玫瑰+2枝粉色桔梗',
-        img: img1,
-        id: 1
-    }, {
-        price: 378,
-        title: '浓33枝红玫瑰+梦幻黑纱',
-        img: img2,
-        id: 2
-    }, {
-        price: 628,
-        title: '戴安娜粉玫瑰+紫色勿忘我',
-        img: img3,
-        id: 3
-    },
-    ],
-    searchText: "",
-    cart: new Map(),
-    cartVisible: false,
-    order: []
+    flowers: []
 }
+
+// [{ "createTime": 1614084121000, "deleted": 0, "key": 1, "imgUrl": "", "price": 268, "title": "11枝红玫瑰+栀子叶", img: img0}, 
+//             { "createTime": 1614084121000, "deleted": 0, "key": 2, "imgUrl": "", "price": 158, "title": "19枝苏醒玫瑰+2枝粉色桔梗", img: img1  }, 
+//             { "createTime": 1614084121000, "deleted": 0, "key": 3, "imgUrl": "", "price": 268, "title": "11枝红玫瑰+栀子叶", img: img2  }, 
+//             { "createTime": 1614084121000, "deleted": 0, "key": 4, "imgUrl": "", "price": 299, "title": "戴安娜粉玫瑰+紫色勿忘我", img: img3  }]
+
+
 
 const FlowerContext = () => {
     const store = useLocalObservable(() => ({
         ...initalValues,
 
-        search(text) {
-            store.searchText = text
+        async getFlowers() {
+            store.flowers =  (await api.get('/flower')).data.map(({ id, ...rest }) => ({
+                key: id,
+                ...rest
+            }))
+            
+            // store.flowers = data.map((e, i) => ({
+            //     ...e,
+            //     img: imgs[i]
+            // }))
         },
 
-        get result() {
-            return store.flowers.filter((element) => {
-                return element.title.search(store.searchText) !== -1
-            })
+        async putFlower(type, description) {
+            // const { flowerType } = store
+            // const index = flowerType.findIndex(e => e.key === store.editing)
+            // flowerType[index].type = type
+            // flowerType[index].description = description
+
+            // await api.put("/flowertype", {
+            //     id: store.editing,
+            //     type,
+            //     description
+            // })
         },
 
-        setCartVisible(state) {
-            store.cartVisible = state
-        },
-
-        addGoods(id) {
-            let count = store.cart.get(id)
-            count = count ? count + 1 : 1
-            store.cart.set(id, count)
-        },
-
-        minusGoods(id) {
-            let count = store.cart.get(id)
-            if (!count) return
-            count = count - 1
-            if (count === 0) {
-                store.cart.delete(id)
-            } else {
-                store.cart.set(id, count)
-            }
-        },
-
-        get cartGoods() {
-            const result = []
-            store.cart.forEach((value, key) => {
-                result.push(
-                    {
-                        ...store.flowers[key],
-                        number: value,
-                        key
-                    }
-                )
-            });
-
-            return result
-        },
-
-        addOrder(information, list, money) {
-            // console.log(JSON.stringify(information), JSON.stringify(list))
-
-            list.forEach(({ id }) => {
-                store.cart.delete(id)
-            })
-
-            // console.log(JSON.stringify(store.cart))
-
-            store.order.push({
-                information,
-                list,
-                isReceived: false,
-                isSent: false,
-                money
-            })
-            // console.log(store.order)
-        },
-
-        get orderList() {
-            return store.order.map(value => {
-                const { list } = value
-                let newList = list.map(({id, number}) => {
-                    return {
-                        ...store.flowers[id],
-                        number
-                    }
-                })
-                return {...value, list: newList}
-            })
+        getFlower(key) {
+            const { flowers } = store
+            const flower = flowers.find(e => e.key === key)
+            console.log(JSON.stringify(flower))
+            return flower
         }
-    }))
 
+    }))
     return store
 }
 

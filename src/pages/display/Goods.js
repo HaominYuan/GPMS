@@ -6,19 +6,19 @@ import { observer } from 'mobx-react'
 const { Meta } = Card;
 
 const Goods = observer(() => {
-    const { flowerStore } = useContext(RootStoreContext)
+    const { displayStore } = useContext(RootStoreContext)
 
     const showDrawer = (id) => {
-        flowerStore.addGoods(id)
-        flowerStore.setCartVisible(true)
+        displayStore.addGoods(id)
+        displayStore.setCartVisible(true)
     }
 
     return (
         <div className={style.goods}>
             <Space>
-                {flowerStore.result.map(({ price, title, img, id }) => {
+                {displayStore.result.map(({ price, title, img, id }) => {
                     return (
-                        <Card style={{ width: 150 }}
+                        <Card style={{ width: 200 }}
                             cover={<Image src={img} />}
                             actions={[<Button type="primary" onClick={() => showDrawer(id)} >加入购物车</Button>]}
                             key={id}

@@ -3,8 +3,7 @@ import { Link, Route, useRouteMatch } from 'react-router-dom'
 import { Layout } from 'antd'
 import { observer } from 'mobx-react';
 import FlowerList from './FlowerList';
-import FlowerType from './FlowerType';
-import style from './seller.module.scss'
+import FlowerType from './TypeList';
 import OrderList from './OrderList';
 
 const { Content, Sider } = Layout
@@ -20,7 +19,7 @@ const Seller = observer(() => {
     return (
         <>
             <Layout>
-                <Sider className="site-layout-background">
+                <Sider width={250}>
                     <Menu
                         onClick={handleClick}
                         defaultSelectedKeys={['flowertype']}
@@ -59,7 +58,7 @@ const Seller = observer(() => {
                         <Route path={`${path}/flowerlist`} component={FlowerList} />
                         <Route path={`${path}/flowertype`} component={FlowerType} />
                         <Route path={`${path}/orderlist`} component={OrderList} />
-                        <Route exact path={`${path}`} component={FlowerList} />
+                        <Route exact path={`${path}`} component={FlowerType} />
                     </Content>
                 </Layout>
             </Layout>

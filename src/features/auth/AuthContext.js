@@ -11,14 +11,6 @@ const AuthContext = () => {
     const store = useLocalObservable(() => ({
         ...initalValues,
 
-        // get user() {
-        //     return store.user
-        // },
-
-        // setUser(accessToken) {
-        //     store.user = accessToken
-        // },
-
         async login(username, password) {
             const result = await api.get('login', {
                 params: {

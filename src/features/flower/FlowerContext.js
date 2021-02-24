@@ -11,49 +11,65 @@ const initalValues = {
     flowers: []
 }
 
-// [{ "createTime": 1614084121000, "deleted": 0, "key": 1, "imgUrl": "", "price": 268, "title": "11枝红玫瑰+栀子叶", img: img0}, 
-//             { "createTime": 1614084121000, "deleted": 0, "key": 2, "imgUrl": "", "price": 158, "title": "19枝苏醒玫瑰+2枝粉色桔梗", img: img1  }, 
-//             { "createTime": 1614084121000, "deleted": 0, "key": 3, "imgUrl": "", "price": 268, "title": "11枝红玫瑰+栀子叶", img: img2  }, 
-//             { "createTime": 1614084121000, "deleted": 0, "key": 4, "imgUrl": "", "price": 299, "title": "戴安娜粉玫瑰+紫色勿忘我", img: img3  }]
-
-
-
 const FlowerContext = () => {
     const store = useLocalObservable(() => ({
         ...initalValues,
+
+        getFlower(key) {
+            const { flowers } = store
+            const flower = flowers.find(e => e.key === key)
+            return flower
+        },
 
         async getFlowers() {
             store.flowers =  (await api.get('/flower')).data.map(({ id, ...rest }) => ({
                 key: id,
                 ...rest
             }))
-            
+
             // store.flowers = data.map((e, i) => ({
             //     ...e,
             //     img: imgs[i]
             // }))
         },
 
-        async putFlower(type, description) {
-            // const { flowerType } = store
-            // const index = flowerType.findIndex(e => e.key === store.editing)
-            // flowerType[index].type = type
-            // flowerType[index].description = description
+        async putFlower(key, title, price, flowerType) {
+            const flower = store.getFlower(key)
+            flower.price = price
+            flower.title = title
 
-            // await api.put("/flowertype", {
-            //     id: store.editing,
-            //     type,
-            //     description
-            // })
+            await api.put("/flower", {
+                id: key,
+                price,
+                title,
+                flowerType
+            })
         },
 
-        getFlower(key) {
-            const { flowers } = store
-            const flower = flowers.find(e => e.key === key)
-            console.log(JSON.stringify(flower))
-            return flower
-        }
+        async postFlower(title, price, flowerType, imgUrl) {
 
+            const {id, ...rest} = (await api.post('/flower', {
+                title,
+                price,
+                flowerType,
+            })).data
+
+            store.flowers.push({
+                key: id,
+                ...rest
+            })
+            
+            store.flowers = store.flowers.slice()
+        },
+
+        async deleteFlower(key) {
+            store.flowers = store.flowers.filter(e => e.key !== key)
+            await api.delete('/flower', {
+                data: {
+                    id: key
+                }
+            })
+        },
     }))
     return store
 }

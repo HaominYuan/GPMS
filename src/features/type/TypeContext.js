@@ -2,62 +2,25 @@ import { useLocalObservable } from "mobx-react"
 import { api } from "../../api/axios-config"
 
 const initalValues = {
-    detailVisible: false,
-    flowerType: [],
-    editing: -1,
-    isloading: false
+    flowerTypes: [],
 }
 
-const DetailContext = () => {
+const TypeContext = () => {
     const store = useLocalObservable(() => ({
         ...initalValues,
 
 
-        async getFlowerType() {
-            store.flowerType = (await api.get('/flowertype')).data.map(({ id, ...rest }) => ({
+        getFlowerType(key) {
+            const { flowerTypes } = store
+            return flowerTypes.find(e => e.key === key)
+        },
+
+        async getFlowerTypes() {
+            store.flowerTypes = (await api.get('/flowertype')).data.map(({ id, ...rest }) => ({
                 key: id,
                 ...rest
             }))
-        },
 
-        setVisible(state) {
-            store.detailVisible = state
-        },
-
-        setEditing(key) {
-            store.editing = key
-        },
-
-        getEditing() {
-            const { flowerType } = store
-            for (let element in flowerType) {
-                if (flowerType[element].key === store.editing) return flowerType[element]
-            }
-            return { type: "", description: "" }
-        },
-
-        async putFlowerType(type, description) {
-            const { flowerType } = store
-            const index = flowerType.findIndex(e => e.key === store.editing)
-            flowerType[index].type = type
-            flowerType[index].description = description
-
-            await api.put("/flowertype", {
-                id: store.editing,
-                type,
-                description
-            })
-        },
-
-
-
-        async deleteFlowerType(key) {
-            store.flowerType = store.flowerType.filter(e => e.key !== key)
-            await api.delete('/flowertype', {
-                data: {
-                    id: key
-                }
-            })
         },
 
         async postFlowerType(type, description) {
@@ -67,16 +30,38 @@ const DetailContext = () => {
                 description
             })).data
 
-            store.flowerType.push({
+            store.flowerTypes.push({
                 key: id,
                 ...rest
             })
 
-            store.flowerType = store.flowerType.slice()
-        }
+            store.flowerTypes = store.flowerTypes.slice()
+        },
+
+        async putFlowerType(key, type, description) {
+            const flowerType = store.getFlowerType(key)
+
+            flowerType.type = type
+            flowerType.description = description
+
+            await api.put("/flowertype", {
+                id: store.editing,
+                type,
+                description
+            })
+        },
+
+        async deleteFlowerType(key) {
+            store.flowerTypes = store.flowerTypes.filter(e => e.key !== key)
+            await api.delete('/flowertype', {
+                data: {
+                    id: key
+                }
+            })
+        },
     }))
 
     return store
 }
 
-export default DetailContext
+export default TypeContext

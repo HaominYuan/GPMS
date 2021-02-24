@@ -13,35 +13,23 @@ const trans = (text) => {
 
 const TypeList = observer(() => {
     const { typeStore } = useContext(RootStoreContext)
-    const [form] = Form.useForm()
+    const [editForm] = Form.useForm()
     const [addForm] = Form.useForm()
-    const [visible, setVisible] = useState(false)
+    const [addVisible, setAddVisible] = useState(false)
+    const [editVisible, setEditVisible] = useState(false)
+    const [editKey, setEditKey] = useState(-1)
+
 
     useEffect(() => {
-        if (typeStore.detailVisible) {
-            form.setFieldsValue(typeStore.getEditing())
+        typeStore.getFlowerTypes()
+    }, [typeStore])
+
+
+    useEffect(() => {
+        if (editVisible) {
+            editForm.setFieldsValue(typeStore.getFlowerType(editKey))
         }
     })
-
-    useEffect(() => {
-        typeStore.getFlowerType()
-    }, [])
-
-    const handleOk = () => {
-        typeStore.putFlowerType(form.getFieldValue('type'), form.getFieldValue('description'))
-
-        typeStore.setVisible(false)
-    };
-
-    const handleCancel = () => {
-        typeStore.setVisible(false)
-    };
-
-    const handleAdd = () => {
-        typeStore.postFlowerType(addForm.getFieldValue('type'), addForm.getFieldValue('description'))
-
-        setVisible(false)
-    }
 
     const columns = [
         {
@@ -63,32 +51,44 @@ const TypeList = observer(() => {
             render: (text, record) => trans((
                 <Space size="middle">
                     <Button onClick={() => {
-                        typeStore.setVisible(true)
-                        typeStore.setEditing(record.key)
+                        setEditKey(record.key)
+                        setEditVisible(true)
                     }} type='primary'>
                         修改
                     </Button>
                     <Button type="primary" danger onClick={() => {
-                        handleRemoveItem(record.key)
+                        handleRemoveType(record.key)
                     }}>
                         删除
                     </Button>
                 </Space>
             )),
         },
-    ];
+    ]
 
-    const handleRemoveItem = async (key) => {
+    const handleAddType = async () => {
+        await typeStore.postFlowerType(addForm.getFieldValue('type'), addForm.getFieldValue('description'))
+
+        setAddVisible(false)
+    }
+
+    const handleRemoveType = async (key) => {
         await typeStore.deleteFlowerType(key)
+    }
+
+    const handleEditType = async () => {
+        await typeStore.putFlowerType(editKey, editForm.getFieldValue('type'), editForm.getFieldValue('description'))
+
+        setEditVisible(false)
     }
 
     return (
         <>
-            <Button type='primary' onClick={() => setVisible(true)}>新增类别</Button>
-            <Table columns={columns} dataSource={typeStore.flowerType} style={{ marginTop: 20 }} />
-            <Modal title="类别属性" visible={typeStore.detailVisible} onOk={handleOk} onCancel={handleCancel} width={700}>
+            <Button type='primary' onClick={() => setAddVisible(true)}>新增类别</Button>
+            <Table columns={columns} dataSource={typeStore.flowerTypes} style={{ marginTop: 20 }} />
+            <Modal title="类别属性" visible={editVisible} onOk={handleEditType} onCancel={() => setEditVisible(false)} width={700}>
                 <Form
-                    form={form}
+                    form={editForm}
                 >
                     <Form.Item
                         label="类名"
@@ -106,9 +106,7 @@ const TypeList = observer(() => {
                 </Form>
             </Modal>
 
-
-
-            <Modal title="新增类别" visible={visible} onOk={handleAdd} onCancel={() => setVisible(false)}>
+            <Modal title="新增类别" visible={addVisible} onOk={handleAddType} onCancel={() => setAddVisible(false)}>
                 <Form
                     form={addForm}
                 >

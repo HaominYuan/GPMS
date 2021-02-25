@@ -1,19 +1,21 @@
 import { Menu } from 'antd'
-import { Link, Route, useRouteMatch } from 'react-router-dom'
+import { Link, Route, useLocation, useRouteMatch } from 'react-router-dom'
 import { Layout } from 'antd'
 import { observer } from 'mobx-react';
 import FlowerList from './FlowerList';
 import FlowerType from './TypeList';
 import OrderList from './OrderList';
+import { useEffect } from 'react';
 
 const { Content, Sider } = Layout
 const { SubMenu } = Menu;
 
 const Seller = observer(() => {
     const { path, url } = useRouteMatch()
+    const location = useLocation()
 
-    const handleClick = e => {
-        console.log('click ', e);
+    const handleClick = () => {
+        console.log('here')
     }
 
     return (
@@ -21,11 +23,13 @@ const Seller = observer(() => {
             <Layout>
                 <Sider width={250}>
                     <Menu
-                        onClick={handleClick}
                         defaultSelectedKeys={['flowertype']}
                         defaultOpenKeys={['flower']}
+                        // selectedKeys={[location.pathname]}
+                        // openKeys={[location.pathname.split('/').slice(0, 2).join('/')]}
                         mode="inline"
                         style={{ height: '100%' }}
+                        onClick={handleClick}
                     >
                         <SubMenu key="flower" title="鲜花管理">
                             <Menu.Item key="flowertype">

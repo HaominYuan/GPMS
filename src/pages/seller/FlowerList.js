@@ -1,16 +1,9 @@
-import { Image, Button, Table, Space, Form, Modal, Input, Cascader, Upload, InputNumber } from 'antd'
+import { Image, Button, Table, Space, Form, Modal, Input, Cascader, InputNumber } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { useContext, useEffect, useState } from 'react'
 import { RootStoreContext } from '../../store/RootStore'
 import style from './seller.module.scss'
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-
-
-const getBase64 = (img, callback) => {
-    const reader = new FileReader()
-    reader.addEventListener('load', () => callback(reader.result))
-    reader.readAsDataURL(img)
-}
+import FlowerUpload from './FlowerUpload'
 
 const FlowerList = observer(() => {
     const { flowerStore, typeStore } = useContext(RootStoreContext)
@@ -20,8 +13,6 @@ const FlowerList = observer(() => {
     const [addForm] = Form.useForm()
     const [editKey, setEditKey] = useState(-1)
     const [options, setOptions] = useState()
-    const [loading, setLoading] = useState(false)
-    const [imgUrl, setImgUrl] = useState()
 
     useEffect(() => {
         typeStore.getFlowerTypes()
@@ -38,18 +29,31 @@ const FlowerList = observer(() => {
 
     useEffect(() => {
         if (!editVisible) { return }
-        editForm.setFieldsValue(flowerStore.getFlower(editKey))
+        const temp = flowerStore.getFlower(editKey)
+
+        editForm.setFieldsValue({
+            ...temp,
+            flowerType: [
+                temp.flowerType.id
+            ],
+            img: [
+                {
+                    status: 'done',
+                    url: temp.imgUrl,
+                },
+            ]
+        })
     })
 
     useEffect(() => {
-        if (!addVisible) { return }
+        if (!addVisible && !editVisible) { return }
         typeStore.getFlowerTypes()
         const result = typeStore.flowerTypes.map(({ key, type }) => ({
             label: type,
             value: key
         }))
         setOptions(result)
-    }, [addVisible])
+    }, [addVisible, editVisible])
 
     const columns = [
         {
@@ -106,9 +110,10 @@ const FlowerList = observer(() => {
     ]
 
     const handleAddFlower = async () => {
-        await flowerStore.postFlower(addForm.getFieldValue('title'), addForm.getFieldValue('price'), { id: addForm.getFieldValue('flowerType')[0] })
-
+        await flowerStore.postFlower(addForm.getFieldValue('title'), addForm.getFieldValue('price'), { id: addForm.getFieldValue('flowerType')[0] }, addForm.getFieldValue('img')[0].response.id)
+        addForm.setFieldsValue({})
         setAddVisible(false)
+
     }
 
     const handleRemoveFlower = async (key) => {
@@ -116,47 +121,8 @@ const FlowerList = observer(() => {
     }
 
     const handleEditFlower = async () => {
-
-        await flowerStore.putFlower(editKey, editForm.getFieldValue('title'), editForm.getFieldValue('price'))
+        await flowerStore.putFlower(editKey, editForm.getFieldValue('title'), editForm.getFieldValue('price'), editForm.getFieldValue('flowerType')[0], editForm.getFieldValue('img')[0].response.id)
         setEditVisible(false)
-    }
-
-    const handleUploadChange = async info => {
-
-        console.log(info)
-
-
-        if (info.file.status === 'uploading') {
-            setLoading(true)
-            return
-        }
-        if (info.file.status === 'done') {
-            getBase64(info.file.originFileObj, imgUrl => {
-                setLoading(false)
-                console.log(imgUrl)
-                setImgUrl(imgUrl)
-            })
-        }
-    }
-
-    const uploadButton = (
-        <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    )
-
-    const normFile = (e) => {
-        console.log('Upload event:', e);
-        if (Array.isArray(e)) {
-          return e;
-        }
-        return e && e.fileList;
-      };
-
-
-    const beforeUpload = (file, fileList) => {
-        return false
     }
 
     return (
@@ -179,8 +145,23 @@ const FlowerList = observer(() => {
                         label="价格"
                         name="price"
                     >
-                        <InputNumber width={"100%"} size={"large"} />
+                        <InputNumber />
                     </Form.Item>
+
+                    <Form.Item
+                        label="类别"
+                        name="flowerType"
+                    >
+                        <Cascader options={options} placeholder="" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="图片"
+                        name="img"
+                    >
+                        <FlowerUpload />
+                    </Form.Item>
+
                 </Form>
             </Modal>
             <Modal title="新增鲜花" visible={addVisible} onOk={handleAddFlower} onCancel={() => setAddVisible(false)}>
@@ -193,6 +174,7 @@ const FlowerList = observer(() => {
                     >
                         <Input />
                     </Form.Item>
+
                     <Form.Item
                         label="价格"
                         name="price"
@@ -210,17 +192,8 @@ const FlowerList = observer(() => {
                     <Form.Item
                         label="图片"
                         name="img"
-                        valuePropName="fileList"
-                        getValueFromEvent={normFile}
                     >
-                        <Upload
-                            name="flower"
-                            listType="picture-card"
-                            showUploadList={false}
-                            // action="/flowerimg"
-                        >
-                            {imgUrl ? <img src={imgUrl} alt="img" style={{ width: '100%' }} /> : uploadButton}
-                        </Upload>
+                        <FlowerUpload />
                     </Form.Item>
                 </Form>
             </Modal>

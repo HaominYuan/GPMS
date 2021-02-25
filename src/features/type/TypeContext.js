@@ -45,7 +45,7 @@ const TypeContext = () => {
             flowerType.description = description
 
             await api.put("/flowertype", {
-                id: store.editing,
+                id: key,
                 type,
                 description
             })

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Upload } from 'antd'
+import { Button, Form, Upload } from 'antd'
 import { PlusOutlined } from "@ant-design/icons";
 import Modal from 'antd/lib/modal/Modal';
 import style from './home.module.scss'
@@ -7,19 +7,31 @@ import style from './home.module.scss'
 const Home = () => {
     const [form] = Form.useForm()
 
+    const handleClick = () => {
+        console.log(form.getFieldValue('uploadPhoto'))
+    }
+
+
     return (
-        <Form
-            form={form}
-            initialValues={
-                {
-                    'uploadPhoto': []
+        <>
+            <Form
+                form={form}
+                initialValues={
+                    {
+                        'uploadPhoto': [{
+                            url: img
+                        }]
+                    }
                 }
-            }
-        >
-            <Form.Item name="uploadPhoto">
-                <UploadComponent />
-            </Form.Item>
-        </Form>
+            >
+                <Form.Item name="uploadPhoto">
+                    <UploadComponent />
+                </Form.Item>
+            </Form>
+
+            <Button type='primary' onClick={handleClick}> submit</Button>
+        </>
+
     )
 }
 
@@ -47,15 +59,18 @@ const UploadComponent = ({ value, onChange }) => {
 
     const triggerChange = (v) => {
         if (!onChange) { return }
+
         onChange(v)
     }
 
     const handleChange = ({ file, fileList }) => {
+
         fileList = fileList.map((f) => {
             if (f.response) {
-                f.id = f.uid;
-                console.log(f.response.data)
+                // f.id = f.uid;
+                console.log(f.response)
                 // file.imgUrl = file.response.data.key
+
             }
             return f;
         })
@@ -79,9 +94,9 @@ const UploadComponent = ({ value, onChange }) => {
     }
 
     const handlePreview = async (file) => {
-        setPreviewImage(`url/${file.imgUrl}`);
+        setPreviewImage("/static/media/0.6d5e7135.jpg");
         setPreviewVisible(true);
-    };
+    }
 
     return (
         <div>

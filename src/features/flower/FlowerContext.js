@@ -1,11 +1,5 @@
 import { useLocalObservable } from "mobx-react"
 import { api } from "../../api/axios-config"
-import img0 from '../../images/flowers/0.jpg'
-import img1 from '../../images/flowers/1.jpg'
-import img2 from '../../images/flowers/2.jpg'
-import img3 from '../../images/flowers/3.jpg'
-
-const imgs = [img0, img1, img2, img3]
 
 const initalValues = {
     flowers: []
@@ -18,47 +12,52 @@ const FlowerContext = () => {
         getFlower(key) {
             const { flowers } = store
             const flower = flowers.find(e => e.key === key)
+
             return flower
         },
 
         async getFlowers() {
-            store.flowers =  (await api.get('/flower')).data.map(({ id, ...rest }) => ({
+            store.flowers = (await api.get('/flowers')).data.map(({ id, ...rest }) => ({
                 key: id,
                 ...rest
             }))
 
-            // store.flowers = data.map((e, i) => ({
-            //     ...e,
-            //     img: imgs[i]
-            // }))
         },
 
-        async putFlower(key, title, price, flowerType) {
-            const flower = store.getFlower(key)
-            flower.price = price
-            flower.title = title
-
+        async putFlower(key, title, price, flowerType, imgId) {
             await api.put("/flower", {
                 id: key,
                 price,
                 title,
-                flowerType
+                flowerType: {
+                    id: flowerType
+                },
+                imgId
             })
+
+            Object.assign(store.getFlower(key), (await api.get('/flower', {
+                params: {
+                    id: key
+                }
+            })).data)
+
+            store.flowers = store.flowers.slice()
+
         },
 
-        async postFlower(title, price, flowerType, imgUrl) {
-
-            const {id, ...rest} = (await api.post('/flower', {
+        async postFlower(title, price, flowerType, imgId) {
+            const { id, ...rest } = (await api.post('/flower', {
                 title,
                 price,
                 flowerType,
+                imgId
             })).data
 
             store.flowers.push({
                 key: id,
-                ...rest
+                ...rest,
             })
-            
+
             store.flowers = store.flowers.slice()
         },
 

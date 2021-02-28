@@ -26,10 +26,17 @@ const FlowerUpload = ({ value, onChange }) => {
     }, [value])
 
     const handleChange = ({ file, fileList }) => {
+
         if (file.status === 'done') {
+            fileList = fileList.map(file => {
+                if (file.response) {
+                    file.key = file.response.id
+                    console.log(file)
+                }
+                return file
+            })
             onChange(fileList)
         }
-        
         setFileList([...fileList])
     }
 

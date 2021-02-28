@@ -10,7 +10,7 @@ const RootStore = ({ children }) => {
 
     // 存储状态
     const authContext = useAuthContext()
-    const dispayContext =  useDisplayContext()
+    const displayContext =  useDisplayContext()
     const typeContext = useTypeContext()
     const flowerContext = useFlowerContext()
 
@@ -18,7 +18,7 @@ const RootStore = ({ children }) => {
         <RootStoreContext.Provider
             value={{ 
                 authStore: authContext, 
-                displayStore: dispayContext, 
+                displayStore: displayContext,
                 typeStore: typeContext,
                 flowerStore: flowerContext
             }}

@@ -104,7 +104,7 @@ const tailLayout = {
 };
 
 const Pay = observer(() => {
-    const { flowerStore } = useContext(RootStoreContext)
+    const { displayStore } = useContext(RootStoreContext)
     const [money, setMoney] = useState(0)
     const [list, setList] = useState([])
     const [visible, setVisible] = useState(false)
@@ -114,7 +114,7 @@ const Pay = observer(() => {
     const tableChange = (selectedRowKeys, selectedRows) => {
         setList(selectedRows.map(value => {
             return {
-                id: value.key,
+                key: value.key,
                 number: value.number
             }
         }))
@@ -124,12 +124,14 @@ const Pay = observer(() => {
         }, 0))
     }
 
+
+    // 支付
     const onFinish = values => {
+
         if (money === 0) {
             message.info("请选择需要支付的商品")
             return
         }
-
 
         setInformation(values)
         setVisible(true)
@@ -143,7 +145,7 @@ const Pay = observer(() => {
         if (visible) {
             setTimeout(() => {
                 setVisible(false)
-                flowerStore.addOrder(information, list, money)
+                displayStore.addOrder(information, list, money)
             }, 3000)
         }
     }, [visible])
@@ -156,8 +158,7 @@ const Pay = observer(() => {
                         onChange: tableChange,
                     }}
                     columns={columns}
-                    dataSource={flowerStore.cartGoods}
-                    // dataSource={data}
+                    dataSource={displayStore.cartGoods}
                     pagination={false}
                     summary={() => {
                         return <Table.Summary.Row>

@@ -19,7 +19,6 @@ const TypeList = observer(() => {
     const [editVisible, setEditVisible] = useState(false)
     const [editKey, setEditKey] = useState(-1)
 
-
     useEffect(() => {
         typeStore.getFlowerTypes()
     }, [typeStore])
@@ -30,6 +29,10 @@ const TypeList = observer(() => {
             editForm.setFieldsValue(typeStore.getFlowerType(editKey))
         }
     })
+
+    const handleRemoveType = async (key) => {
+        await typeStore.deleteFlowerType(key)
+    }
 
     const columns = [
         {
@@ -70,10 +73,6 @@ const TypeList = observer(() => {
         await typeStore.postFlowerType(addForm.getFieldValue('type'), addForm.getFieldValue('description'))
 
         setAddVisible(false)
-    }
-
-    const handleRemoveType = async (key) => {
-        await typeStore.deleteFlowerType(key)
     }
 
     const handleEditType = async () => {

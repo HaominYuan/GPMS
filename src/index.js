@@ -8,7 +8,7 @@ import "./index.scss"
 import Login from './pages/login/Login'
 import Home from './pages/home/Home'
 import EditableTable from './pages/edit/Edit';
-import Nomatch from './pages/404/Nomatch';
+import NoMatch from './pages/404/NoMatch';
 import Display from './pages/display/Display';
 import RootStore from './store/RootStore';
 import { RootStoreContext } from './store/RootStore'
@@ -32,7 +32,7 @@ const R = () => {
                 <Route path="/order" component={Order} />
                 <Route path="/seller" component={Seller} />
                 <Route exact path="/" component={Display} />
-                <Route exact path="*" component={Nomatch} />
+                <Route exact path="*" component={NoMatch} />
             </Switch>
         </>
     )

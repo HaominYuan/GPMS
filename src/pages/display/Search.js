@@ -8,11 +8,9 @@ const { Search } = Input
 const Wrapper = () => {
     const { flowerStore } = useContext(RootStoreContext)
 
-
     const onSearch = (value) => {
         flowerStore.search(value)
     }
-
 
     return (
         <div className={style.search}>

@@ -59,38 +59,40 @@ import Text from 'antd/lib/typography/Text';
 // }]
 
 const Order = observer(() => {
-    const { flowerStore } = useContext(RootStoreContext)
+    const { displayStore } = useContext(RootStoreContext)
 
     return (
         <>
             <List
                 header={<div>所有订单</div>}
                 bordered
-                dataSource={flowerStore.orderList}
-                // dataSource={data}
+                dataSource={displayStore.orderList}
 
                 renderItem={({ list, isReceived, isSent, money }) => (
                     <Card>
                         <div className={style.item}>
-                            {list.map(({ price, title, img, id, number }) => (
-                                <div className={style.cartGoods} key={id}>
-                                    <Badge count={number}>
-                                        <Image src={img} width={100} />
-                                    </Badge>
-                                    <div className={style.left}>
-                                        <h5 className={style.title}>{title}</h5>
-                                        <div className={style.meta}>
-                                            <h5>{price}元</h5>
+                            {list.map(({ price, title, imgUrl, key, number }) => {
+                                console.log(imgUrl)
+                                return (
+                                    <div className={style.cartGoods} key={key}>
+                                        <Badge count={number}>
+                                            <Image src={imgUrl} width={100} />
+                                        </Badge>
+                                        <div className={style.left}>
+                                            <h5 className={style.title}>{title}</h5>
+                                            <div className={style.meta}>
+                                                <h5>{price}元</h5>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
                         <div className={style.down}>
-                                    <Text type='danger'>总金额:  {money}</Text>
-                                <div>
-                                    {!isSent ? <Button disabled>尚未发货</Button> : isReceived ? <Button disabled>已经收货</Button> : <Button type='primary'>确认收货</Button>}
-                                </div>
+                            <Text type='danger'>总金额:  {money}</Text>
+                            <div>
+                                {!isSent ? <Button disabled>尚未发货</Button> : isReceived ? <Button disabled>已经收货</Button> : <Button type='primary'>确认收货</Button>}
+                            </div>
                         </div>
                     </Card>
                 )}

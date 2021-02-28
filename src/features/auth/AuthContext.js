@@ -18,6 +18,7 @@ const AuthContext = () => {
                     password
                 }
             })
+
             console.log(JSON.stringify(result.data))
         
             if (result.data.state === 'Yes') {

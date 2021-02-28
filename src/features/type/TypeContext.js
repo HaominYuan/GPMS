@@ -16,7 +16,7 @@ const TypeContext = () => {
         },
 
         async getFlowerTypes() {
-            store.flowerTypes = (await api.get('/flowertype')).data.map(({ id, ...rest }) => ({
+            store.flowerTypes = (await api.get('/flowerTypes')).data.map(({ id, ...rest }) => ({
                 key: id,
                 ...rest
             }))
@@ -25,7 +25,7 @@ const TypeContext = () => {
 
         async postFlowerType(type, description) {
 
-            const {id, ...rest} = (await api.post("/flowertype", {
+            const {id, ...rest} = (await api.post("/flowerType", {
                 type,
                 description
             })).data

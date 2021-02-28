@@ -12,10 +12,9 @@ const Cart = observer(() => {
     const { displayStore } = useContext(RootStoreContext)
     const history = useHistory()
 
-
     const onClose = () => {
         displayStore.setCartVisible(false)
-    };
+    }
 
     const open = () => {
         displayStore.setCartVisible(true)
@@ -34,7 +33,6 @@ const Cart = observer(() => {
     }
 
     return (
-
         <>
             <Drawer
                 title="购物车"
@@ -46,21 +44,21 @@ const Cart = observer(() => {
                 mask={false}
                 closable
             >
-                {displayStore.cartGoods.map(({ price, title, img, id, number }) => {
+                {displayStore.cartGoods.map(({ price, title, imgUrl, key, number }) => {
                     return (
-                        <div className={style.cartGoods} key={id}>
+                        <div className={style.cartGoods} key={key}>
                             <Badge count={number}>
-                                <Image src={img} width={80} />
+                                <Image src={imgUrl} width={100} />
                             </Badge>
                             <div className={style.left}>
                                 <h5 className={style.title}>{title}</h5>
                                 <div className={style.meta}>
                                     <h5>{price}元</h5>
                                     <ButtonGroup>
-                                        <Button onClick={() => decline(id)} size={'small'}>
+                                        <Button onClick={() => decline(key)} size={'small'}>
                                             <MinusOutlined />
                                         </Button>
-                                        <Button onClick={() => increase(id)} size={'small'}>
+                                        <Button onClick={() => increase(key)} size={'small'}>
                                             <PlusOutlined />
                                         </Button>
                                     </ButtonGroup>

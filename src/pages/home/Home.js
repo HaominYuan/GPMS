@@ -18,9 +18,7 @@ const Home = () => {
                 form={form}
                 initialValues={
                     {
-                        'uploadPhoto': [{
-                            url: img
-                        }]
+                        'uploadPhoto': []
                     }
                 }
             >

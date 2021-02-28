@@ -1,16 +1,24 @@
 import { useLocalObservable } from "mobx-react"
+import { api } from '../../api/axios-config'
 
 const initalValues = {
     flowers: [],
     searchText: "",
     cart: new Map(),
     cartVisible: false,
-    order: []
+    orders: []
 }
 
 const DisplayContext = () => {
     const store = useLocalObservable(() => ({
         ...initalValues,
+
+        async getFlowers() {
+            store.flowers = (await api.get('/flowers')).data.map(({ id, ...rest }) => ({
+                key: id,
+                ...rest
+            }))
+        },
 
         search(text) {
             store.searchText = text
@@ -44,27 +52,25 @@ const DisplayContext = () => {
         },
 
         get cartGoods() {
-            const result = []
-            store.cart.forEach((value, key) => {
-                result.push(
-                    {
-                        ...store.flowers[key],
-                        number: value,
-                        key
-                    }
-                )
-            });
 
-            return result
+            return store.flowers.filter(e => store.cart.has(e.key)).map(e => {
+                return {
+                    ...e,
+                    number: store.cart.get(e.key)
+                }
+            })
         },
 
         addOrder(information, list, money) {
+            console.log(JSON.stringify(information))
+            console.log(JSON.stringify(list))
+            console.log(JSON.stringify(money))
 
-            list.forEach(({ id }) => {
-                store.cart.delete(id)
+            list.forEach(({ key }) => {
+                store.cart.delete(key)
             })
 
-            store.order.push({
+            store.orders.push({
                 information,
                 list,
                 isReceived: false,
@@ -74,15 +80,20 @@ const DisplayContext = () => {
         },
 
         get orderList() {
-            return store.order.map(value => {
-                const { list } = value
-                let newList = list.map(({id, number}) => {
+
+            return store.orders.map(order => {
+                const { list } = order
+                let newList = list.map(({key, number}) => {
                     return {
-                        ...store.flowers[id],
+                        ...store.flowers[key],
                         number
                     }
                 })
-                return {...value, list: newList}
+
+                // const temp = store.flowers.filter(flower => )
+
+
+                return {...order, list: newList}
             })
         }
     }))

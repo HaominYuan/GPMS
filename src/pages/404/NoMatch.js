@@ -1,7 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 
-const Nomatch = () => {
+const NoMatch = () => {
     const location = useLocation()
 
     return (
@@ -11,4 +11,4 @@ const Nomatch = () => {
     )
 }
 
-export default Nomatch
+export default NoMatch

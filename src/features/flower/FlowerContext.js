@@ -21,7 +21,6 @@ const FlowerContext = () => {
                 key: id,
                 ...rest
             }))
-
         },
 
         async putFlower(key, title, price, flowerType, imgId) {

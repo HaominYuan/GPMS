@@ -40,6 +40,7 @@ const FlowerList = observer(() => {
                 {
                     status: 'done',
                     url: temp.imgUrl,
+                    key: parseInt(temp.imgUrl.replace(/[^0-9]/ig,""))
                 },
             ]
         })
@@ -113,7 +114,6 @@ const FlowerList = observer(() => {
         await flowerStore.postFlower(addForm.getFieldValue('title'), addForm.getFieldValue('price'), { id: addForm.getFieldValue('flowerType')[0] }, addForm.getFieldValue('img')[0].response.id)
         addForm.setFieldsValue({})
         setAddVisible(false)
-
     }
 
     const handleRemoveFlower = async (key) => {
@@ -121,7 +121,7 @@ const FlowerList = observer(() => {
     }
 
     const handleEditFlower = async () => {
-        await flowerStore.putFlower(editKey, editForm.getFieldValue('title'), editForm.getFieldValue('price'), editForm.getFieldValue('flowerType')[0], editForm.getFieldValue('img')[0].response.id)
+        await flowerStore.putFlower(editKey, editForm.getFieldValue('title'), editForm.getFieldValue('price'), editForm.getFieldValue('flowerType')[0], editForm.getFieldValue('img')[0].key)
         setEditVisible(false)
     }
 
